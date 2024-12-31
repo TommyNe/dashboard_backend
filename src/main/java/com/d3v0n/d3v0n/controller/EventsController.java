@@ -17,7 +17,7 @@ public class EventsController {
     EventsRepository eventsRepository;
 
     @PostMapping
-    public Response create(Events events) {
+    public Response create(@RequestBody Events events) {
         LocalDateTime now = LocalDateTime.now();
         events.setCreated_at(now.toString());
         eventsRepository.save(events);
@@ -28,7 +28,7 @@ public class EventsController {
     }
 
     @PutMapping
-    public Response update(Events events) {
+    public Response update(@RequestBody Events events) {
         events.setUpdated_at(LocalDateTime.now().toString());
         eventsRepository.save(events);
         Response response = new Response();
@@ -38,13 +38,13 @@ public class EventsController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@RequestBody Events events) {
-        eventsRepository.delete(events);
+    public String delete(@PathVariable String id) {
+        eventsRepository.deleteById(id);
         return "Event deleted successfully";
     }
 
     @GetMapping
-    public List<Events> getAll(@RequestParam String id) {
+    public List<Events> getAll() {
         List<Events> events = eventsRepository.findAll();
         return events;
     }
